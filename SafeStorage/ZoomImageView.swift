@@ -21,7 +21,7 @@ class ZoomImageView: UIView {
 }
 
 extension ZoomImageView: UIScrollViewDelegate {
-    
+
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageViewOutlet
     }

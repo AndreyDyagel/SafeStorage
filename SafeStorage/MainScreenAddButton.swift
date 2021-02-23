@@ -14,18 +14,21 @@ extension MainScreenViewController {
                                            message: nil,
                                            preferredStyle: .actionSheet)
         let addPhoto = UIAlertAction(title: "add photo",
-                                     style: .default) { (_) in
+                                     style: .default) { [weak self] (_) in
+            guard let self = self else { return }
             self.imagePicker()
         }
         let addFolder = UIAlertAction(title: "add folder",
-                                      style: .default) { (_) in
+                                      style: .default) { [weak self] (_) in
+            guard let self = self else { return }
             self.alert(title: "New Folder", message: "Please enter folder name!") { (string) in
                 self.rawData.append(ProfileData(name: string, type: .folder))
                 self.updateData()
             }
         }
         let cancel = UIAlertAction(title: "Cancel",
-                                   style: .cancel) { (_) in
+                                   style: .cancel) { [weak self] (_) in
+            guard let self = self else { return }
             self.dismiss(animated: true, completion: nil)
         }
         cancel.setValue(UIColor.red, forKey: "titleTextColor")
@@ -44,7 +47,8 @@ extension MainScreenViewController {
                                                 preferredStyle: .alert)
         var alertTextField: UITextField!
         let okAction = UIAlertAction(title: "Save",
-                                     style: .default) { _ in
+                                     style: .default) { [weak self] _ in
+            guard let self = self else { return }
             guard let text = alertTextField.text else { return }
             let newFolderName = Int.random(in: 0...10000)
             if text.isEmpty {
@@ -78,7 +82,8 @@ extension MainScreenViewController {
                                       message: "Delete files permanently?",
                                       preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK",
-                                     style: .default) { _ in
+                                     style: .default) { [weak self] _ in
+            guard let self = self else { return }
             for object in self.selectedFolders {
                 do {
                     try self.fileManager.removeItem(at: self.directoryURL.appendingPathComponent(object.name))
@@ -95,7 +100,8 @@ extension MainScreenViewController {
         }
         
         let cancelAction = UIAlertAction(title: "Cancel",
-                                         style: .destructive) { _ in
+                                         style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
             self.removeFoldersOutlet.isEnabled = false
             self.removeFoldersOutlet.titleLabel?.alpha = 0.5
             self.selectedFolders = []

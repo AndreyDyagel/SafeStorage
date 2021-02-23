@@ -16,9 +16,10 @@ class PasscoderViewController: UIViewController {
     func faceId(_ complition: @escaping() -> ()) {
         if content.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
             content.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: localizedReason) { [weak self] (success, error) in
+                guard let self = self else { return }
                 DispatchQueue.main.async {
                     if success {
-                        self?.dismiss(animated: true, completion: nil)
+                        self.dismiss(animated: true, completion: nil)
                     } else {
                         complition()
                     }
